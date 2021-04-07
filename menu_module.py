@@ -1,0 +1,54 @@
+# -*- coding: utf-8 -*- Pour que l'interpréteur Python utilise l'encodage UTF-8 plutôt que l'ASCII, voir https://docs.python.org/2/tutorial/interpreter.html#source-code-encoding
+
+def menu_interface(jeu):
+    """Permet l'affichage des éléments de l'interface du menu.
+    
+    Lit les valeurs "polices" ; "boutons" ; et "curseur" du paramètre jeu.
+    
+    Paramètres:
+        - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
+    """
+    background(0)
+    fill(65, 255, 0)
+    textAlign(CENTER) # Permet de centrer le texte (https://processing.org/reference/textAlign_.html)
+    
+    # Titre
+    titre = "Space Invader"
+    textFont(jeu["polices"]["retro"], 48)
+    text(titre, width // 2, height // 2 - 100)
+
+    # Boutons
+    jeu["boutons"] = ["Jouer", "Options", "Quitter"] # Utilisation d'un dictionnaire afin d'éviter le placement individuel des boutons
+    textFont(jeu["polices"]["retro"])
+    
+    for i in range(len(jeu["boutons"])):
+        text(jeu["boutons"][i], width // 2, height // 2 + 50 * i)
+    
+    # Curseur
+    text("<", width // 2 + 100, height // 2 + 50 * jeu["curseur"])
+    text(">", width // 2 - 100, height // 2 + 50 * jeu["curseur"])
+    
+def menu_key(jeu):
+    """Permet à l'utilisateur d'interagir avec les boutons du menu par les touches du clavier:
+        - DOWN
+        - UP
+        - ENTER
+        - RIGHT
+        
+    Lit et modifie les valeurs "statut" ; et "curseur" du paramètre jeu.
+    Peut mettre fin au programme.
+        
+    Paramètres:
+        - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
+    """
+    if keyCode == DOWN:
+        jeu["curseur"] += 1 if jeu["curseur"] < 2 else -2 # Incrémentation de 1 au curseur si celui-ci est inférieur à 2 sinon retour à 0
+    elif keyCode == UP:
+        jeu["curseur"] += -1 if jeu["curseur"] > 0 else 2 # Retrait de 1 au curseur si celui-ci est supérieur à 0 sinon ajoute 2
+    elif key == ENTER or keyCode == RIGHT:
+        if jeu["curseur"] == 0: # Bouton Jouer
+            jeu["statut"] = 1
+        elif jeu["curseur"] == 1: # Bouton Options
+            jeu["statut"] = 3
+        else: # Bouton Quitter
+            exit()
