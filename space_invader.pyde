@@ -1,7 +1,7 @@
 from menu_module import *
 
 def setup():
-    """https://processing.org/reference/setup_.html"""
+    """https://py.processing.org/reference/setup.html"""
     global jeu
     
     # Statut du jeu:
@@ -23,7 +23,7 @@ def setup():
     
     
 def draw():
-    """https://processing.org/reference/draw_.html"""
+    """https://py.processing.org/reference/draw.html"""
     if jeu["statut"] == 0:
         menu_interface(jeu) # Affichage des éléments de l'interface du menu
     elif jeu["statut"] == 1:
@@ -34,6 +34,16 @@ def draw():
         pass
 
 def keyPressed():
-    """https://processing.org/reference/keyPressed_.html"""
+    """https://py.processing.org/reference/keyPressed.html"""
     if jeu["statut"] == 0:
         menu_key(jeu)
+
+def mouseMoved():
+    """https://py.processing.org/reference/mouseMoved.html"""
+    if jeu["statut"] == 0:
+        menu_souris(jeu, False)
+
+def mouseClicked():
+    """https://py.processing.org/reference/mouseClicked.html"""
+    if jeu["statut"] == 0:
+        menu_souris(jeu, True)
