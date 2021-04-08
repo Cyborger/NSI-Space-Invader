@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*- Pour que l'interpréteur Python utilise l'encodage UTF-8 plutôt que l'encodage ASCII, voir https://docs.python.org/2/tutorial/interpreter.html#source-code-encoding
 
-def menu_interface(jeu):
+def interface(jeu):
     """Permet l'affichage des éléments de l'interface du menu.
     
     Lit les valeurs "polices" ; "boutons" ; et "curseur" du paramètre jeu.
@@ -25,10 +25,13 @@ def menu_interface(jeu):
         text(jeu["boutons"][i], width // 2, height // 2 + 50 * i)
     
     # Curseur
+    if not "curseur" in jeu: # Pour définir le curseur à 0 par défaut
+        jeu["curseur"] = 0
+    
     text("<", width // 2 + 100, height // 2 + 50 * jeu["curseur"])
     text(">", width // 2 - 100, height // 2 + 50 * jeu["curseur"])
     
-def menu_boutons(jeu):
+def boutons(jeu):
     """Fonction appelée lorsque l'un des boutons a été selectionné par l'utilisateur.
     
     Lit la valeur "curseur" du paramètre jeu.
@@ -38,13 +41,14 @@ def menu_boutons(jeu):
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
     if jeu["curseur"] == 0: # Bouton Jouer
+        jeu.pop("curseur") # Cette valeur curseur ne doit pas être utilisée en dehors du menu principale
         jeu["statut"] = 1
     elif jeu["curseur"] == 1: # Bouton Options
         jeu["statut"] = 3
     else: # Bouton Quitter
         exit()
     
-def menu_key(jeu):
+def clavier(jeu):
     """Permet à l'utilisateur d'interagir avec les boutons du menu par les touches du clavier:
         - DOWN
         - UP
@@ -59,11 +63,11 @@ def menu_key(jeu):
     if keyCode == DOWN:
         jeu["curseur"] += 1 if jeu["curseur"] < 2 else -2 # Incrémentation de 1 au curseur si celui-ci est inférieur à 2 sinon retour à 0
     elif keyCode == UP:
-        jeu["curseur"] += -1 if jeu["curseur"] > 0 else 2 # Retrait de 1 au curseur si celui-ci est supérieur à 0 sinon ajoute 2
+        jeu["curseur"] += -1 if jeu["curseur"] > 0 else 2 # Retrait de 1 au curseur si celui-ci est supérieur à 0 sinon ajoute 2 (nombre de boutons du menu - 1)
     elif key == ENTER or keyCode == RIGHT:
-        menu_boutons(jeu)
+        boutons(jeu)
 
-def menu_souris(jeu, clic):
+def souris(jeu, clic):
     """Permet à l'utilisateur d'interagir avec les boutons du menu par la souris.
     
     Modifie la valeur "curseur" du paramètre jeu si le paramètre clic est FAUX,
@@ -77,7 +81,7 @@ def menu_souris(jeu, clic):
         if mouseX < width // 2 + 100 and mouseX > width // 2 - 100 \
         and mouseY > height // 2 - 30 + 50 * i and mouseY < height // 2 + 30 + 50 * i:
             if clic:
-                menu_boutons(jeu)
+                boutons(jeu)
             else:
                 jeu["curseur"] = i
             

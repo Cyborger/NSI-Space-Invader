@@ -1,4 +1,5 @@
-from menu_module import *
+import menu_module
+import jeu_module
 
 def setup():
     """https://py.processing.org/reference/setup.html"""
@@ -14,8 +15,12 @@ def setup():
     jeu = {
         "statut": 0, # Voir "Statut du jeu"
         "curseur": 0, # Permet la sélection des boutons dans les menu
-        "polices": { # Pour les polices d'écriture
-            "retro": createFont("data/fonts/retro.ttf", 28)
+        "images": { # Préchargement des images
+            "joueur": loadImage("data/images/joueur.png"),
+            "projectile": loadImage("data/images/projectile.png")
+        },
+        "polices": { # Préchargement des polices d'écriture
+            "retro": createFont("data/polices/retro.ttf", 28)
         }
     }
     
@@ -25,9 +30,9 @@ def setup():
 def draw():
     """https://py.processing.org/reference/draw.html"""
     if jeu["statut"] == 0:
-        menu_interface(jeu) # Affichage des éléments de l'interface du menu
+        menu_module.interface(jeu) # Affichage des éléments de l'interface du menu
     elif jeu["statut"] == 1:
-        pass
+        jeu_module.afficher(jeu)
     elif jeu["statut"] == 2:
         pass
     else:
@@ -36,14 +41,16 @@ def draw():
 def keyPressed():
     """https://py.processing.org/reference/keyPressed.html"""
     if jeu["statut"] == 0:
-        menu_key(jeu)
+        menu_module.clavier(jeu)
+    elif jeu["statut"] == 1:
+        jeu_module.clavier(jeu)
 
 def mouseMoved():
     """https://py.processing.org/reference/mouseMoved.html"""
     if jeu["statut"] == 0:
-        menu_souris(jeu, False)
+        menu_module.souris(jeu, False)
 
 def mouseClicked():
     """https://py.processing.org/reference/mouseClicked.html"""
     if jeu["statut"] == 0:
-        menu_souris(jeu, True)
+        menu_module.souris(jeu, True)
