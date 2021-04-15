@@ -42,6 +42,7 @@ def boutons(jeu):
     """
     if jeu["curseur"] == 0: # Bouton Jouer
         jeu.pop("curseur") # Cette valeur curseur ne doit pas être utilisée en dehors du menu principale
+        jeu.pop("boutons")
         jeu["statut"] = 1
     elif jeu["curseur"] == 1: # Bouton Options
         jeu["statut"] = 3

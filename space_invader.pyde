@@ -29,6 +29,7 @@ def setup():
     
 def draw():
     """https://py.processing.org/reference/draw.html"""
+    print jeu
     if jeu["statut"] == 0:
         menu_module.interface(jeu) # Affichage des éléments de l'interface du menu
     elif jeu["statut"] == 1:
