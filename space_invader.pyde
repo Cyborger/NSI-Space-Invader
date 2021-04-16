@@ -1,5 +1,6 @@
 import menu_module
 import jeu_module
+import json # Pour afficher la variable jeu dans un fichier json externe (debug)
 
 def setup():
     """https://py.processing.org/reference/setup.html"""
@@ -7,17 +8,17 @@ def setup():
     
     # Statut du jeu:
     # 0 = Menu principal
-    # 1 = Jeu
+    # 1 = Jeu en cours
     # 2 = "Game Over"
     # 3 = Options
     
     # Initialisation d'un dictionnaire contenant toutes les valeurs associé au jeu
     jeu = {
         "statut": 0, # Voir "Statut du jeu"
-        "curseur": 0, # Permet la sélection des boutons dans les menu
         "images": { # Préchargement des images
             "joueur": loadImage("data/images/joueur.png"),
-            "projectile": loadImage("data/images/projectile.png")
+            "projectile": loadImage("data/images/projectile.png"),
+            "ennemi": loadImage("data/images/ennemi.png")
         },
         "polices": { # Préchargement des polices d'écriture
             "retro": createFont("data/polices/retro.ttf", 28)
@@ -25,11 +26,18 @@ def setup():
     }
     
     size(600, 650)
-    
+
+def debug(output):
+    """Affiche la variable du paramètre output dans la console et l'écrit, après conversion au format JSON, dans le fichier debug.json."""
+    print(output)
+    debug = open("debug.json", "w")
+    debug.write(json.dumps(jeu, skipkeys=True, sort_keys=True, indent=4, default=lambda o: str(o)))
+    debug.close()
     
 def draw():
     """https://py.processing.org/reference/draw.html"""
-    print jeu
+    debug(jeu)
+    
     if jeu["statut"] == 0:
         menu_module.interface(jeu) # Affichage des éléments de l'interface du menu
     elif jeu["statut"] == 1:
