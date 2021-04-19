@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*- Pour que l'interpréteur Python utilise l'encodage UTF-8 plutôt que l'encodage ASCII, voir https://docs.python.org/2/tutorial/interpreter.html#source-code-encoding
+
 def interface(jeu):
     """Permet l'affichage des éléments de l'interface du menu.
     
@@ -34,15 +35,12 @@ def boutons(jeu):
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
     if jeu["curseur"] == 0: # Bouton Jouer
-        jeu.pop("curseur") # Retrait des variables liées à l'affichage du menu
-        jeu.pop("boutons")
-        
         jeu["statut"] = 1
-    elif jeu["curseur"] == 1: # Bouton Options
-        #jeu["statut"] = 3
-        pass
     else: # Bouton Quitter
         exit()
+    
+    jeu.pop("curseur") # Retrait des variables liées à l'affichage du menu
+    jeu.pop("boutons")
     
 def clavier(jeu):
     """Permet à l'utilisateur d'interagir avec les boutons du menu par les touches du clavier:

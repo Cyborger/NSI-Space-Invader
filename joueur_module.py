@@ -31,3 +31,5 @@ def afficher(jeu):
         }
     
     image(jeu["images"]["joueur"], jeu["joueur"]["x"], jeu["joueur"]["y"], jeu["joueur"]["longueur"], jeu["joueur"]["largeur"])
+
+    # TODO Animation de mort du joueur

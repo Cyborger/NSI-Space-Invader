@@ -5,6 +5,9 @@ import ennemi_module
 def projectiles(jeu):
     """Met à jour chacun des projectiles disponibles selon leurs propriétés disponibles dans la variable jeu.
     Initialise une liste pour les contenir le cas échéant.
+
+    Paramètre:
+        - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
     if "projectiles" not in jeu:
         jeu["projectiles"] = []
@@ -13,8 +16,13 @@ def projectiles(jeu):
         projectile["y"] += 5  * projectile["orientation"] * projectile["vitesse"] # Pour le mouvement du projectile
         
         image(jeu["images"]["projectile"], projectile["x"], projectile["y"], projectile["longueur"], projectile["largeur"])
-        
+
         if projectile["y"] < 0: # Suppression des projectiles non affichés par soucis de performances
+            jeu["projectiles"].remove(projectile)
+        
+        collision = ennemi_module.collision(projectile, jeu)
+        if collision:
+            collision["est_vivant"] = False
             jeu["projectiles"].remove(projectile)
 
 def afficher(jeu):
@@ -30,6 +38,15 @@ def afficher(jeu):
     joueur_module.afficher(jeu)
     ennemi_module.afficher(jeu)
 
+    if ennemi_module.collision(jeu["joueur"], jeu):
+        jeu["joueur"]["est_vivant"] = False
+
+        jeu["statut"] = 2
+
+        jeu.pop("joueur")
+        jeu.pop("ennemis")
+        jeu.pop("projectiles")
+
 def clavier(jeu):
     """Permet au joueur d'intéragir avec son clavier durant le jeu.
 
@@ -41,7 +58,6 @@ def clavier(jeu):
         jeu["joueur"]["x"] += 10
     elif keyCode == LEFT and jeu["joueur"]["x"] > 50:
         jeu["joueur"]["x"] -= 10
-    
     # Tir de projectiles par le joueur
     elif keyCode == UP or key == " ":
         joueur_module.nouveau_projectile(jeu)

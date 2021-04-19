@@ -4,7 +4,7 @@ from random import randrange
 def collision(entite, jeu):
     """Vérifie si l'entité donnée dans le paramètre entite entre en collision avec un des ennemis de la liste "ennemis" de la variable jeu.
     
-    Paramètre:
+    Paramètres:
         - dict entite: Dictionnaire contenant les propriétés de l'entité. (Voir "Propriétés des entités" dans space_invader.pyde)
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     
@@ -45,7 +45,7 @@ def nouveau_ennemi(jeu):
         "est_vivant": True
     }
 
-    if collision(ennemi, jeu) != {}: # Permet d'éviter la superposition des ennemis
+    if collision(ennemi, jeu): # Permet d'éviter la superposition des ennemis
         return nouveau_ennemi(jeu)
     
     jeu["ennemis"].append(ennemi)
@@ -63,18 +63,22 @@ def afficher(jeu):
             nouveau_ennemi(jeu)
     
     for ennemi in jeu["ennemis"][:]: # Mise à jour des ennemis
-        if (collision(ennemi, jeu) != {} or # Collision avec d'autres ennemis
+        if (collision(ennemi, jeu) or # Collision avec d'autres ennemis
             ennemi["x"] < ennemi["longueur"] // 2 or # Collision avec la bordure gauche de la fenêtre
             ennemi["x"] > width - ennemi["longueur"] // 2 or # Collision avec la bordure droite de la fenêtre
             int(random(500)) == 0): # Changement d'orientation aléatoire (1 chance sur 500)
 
             ennemi["orientation"] *= -1 # Inversement de l'orientation
         
-        if ennemi["y"] > height + 30: # Retrait des ennemis en bas de fenêtre
-            nouveau_ennemi(jeu) # Création d'un nouvel ennemi plutôt que d'effectuer une translation afin d'éviter toute superposition éventuelle
-            jeu["ennemis"].remove(ennemi)
-        
         ennemi["y"] += ennemi["vitesse"]
         ennemi["x"] += ennemi["orientation"]
 
         image(jeu["images"]["ennemi"], ennemi["x"], ennemi["y"], ennemi["longueur"], ennemi["largeur"])
+        
+        if ennemi["y"] > height + 30: # Retrait des ennemis en bas de fenêtre
+            nouveau_ennemi(jeu) # Création d'un nouvel ennemi plutôt que d'effectuer une translation afin d'éviter toute superposition éventuelle
+            jeu["ennemis"].remove(ennemi)
+
+        if not ennemi["est_vivant"]:
+            # TODO Animation de mort de l'ennemi
+            jeu["ennemis"].remove(ennemi)
