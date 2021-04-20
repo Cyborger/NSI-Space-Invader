@@ -60,12 +60,10 @@ def draw():
     """https://py.processing.org/reference/draw.html"""
     debug(jeu)
     
-    if jeu["statut"] == 0:
+    if jeu["statut"] == 0 or jeu["statut"] == 2:
         menu_module.interface(jeu) # Éléments de l'interface du menu
     elif jeu["statut"] == 1:
         jeu_module.afficher(jeu)
-    elif jeu["statut"] == 2:
-        pass # TODO
     else:
         pass
 
@@ -73,7 +71,7 @@ def keyPressed():
     """https://py.processing.org/reference/keyPressed.html
     Permet au joueur d'intéragir avec ses touches du clavier.
     """
-    if jeu["statut"] == 0:
+    if jeu["statut"] == 0 or jeu["statut"] == 2:
         menu_module.clavier(jeu)
     elif jeu["statut"] == 1:
         jeu_module.clavier(jeu)
@@ -82,12 +80,12 @@ def mouseMoved():
     """https://py.processing.org/reference/mouseMoved.html
     Permet au joueur d'intéragir en bougeant sa souris.
     """
-    if jeu["statut"] == 0:
+    if jeu["statut"] == 0 or jeu["statut"] == 2:
         menu_module.souris(jeu, False)
 
 def mouseClicked():
     """https://py.processing.org/reference/mouseClicked.html
     Permet au joueur d'intéragir en cliquant avec sa souris.
     """
-    if jeu["statut"] == 0:
+    if jeu["statut"] == 0 or jeu["statut"] == 2:
         menu_module.souris(jeu, True)
