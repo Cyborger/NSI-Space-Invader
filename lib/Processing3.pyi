@@ -1565,15 +1565,19 @@ def textAlign(mode: int) -> None: ...
 def textAlign(modeX: int, modeY: int) -> None: ...
 
 
+@overload
 def textLeading(spacing: int) -> None: ...
 
 
+@overload
 def textMode(mode: int) -> None: ...
 
 
+@overload
 def testSize(size: int) -> None: ...
 
 
+@overload
 def textWidth(txt: str) -> int: ...
 
 

@@ -33,6 +33,7 @@ def afficher(jeu):
             "y": height - 80,
             "longueur": 80,
             "largeur": 80,
+            "vies": 3,
             "est_vivant": True
         }
 

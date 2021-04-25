@@ -11,7 +11,7 @@ def interface(jeu):
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
     background(0)
-    fill(65, 255, 0)
+    fill(*jeu["couleurs"]["terminal"]) # L'étoile permet d'extraire les valeurs du tuple
     textAlign(CENTER)  # Centre le texte
 
     # Définition éléments interface selon le statut du jeu

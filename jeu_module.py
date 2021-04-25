@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*- voir https://docs.python.org/2/tutorial/interpreter.html#source-code-encoding
 import joueur_module
 import ennemi_module
+import scores_module
 
 if False:
     from lib.Processing3 import *
@@ -28,6 +29,7 @@ def projectiles(jeu):
         collision = ennemi_module.collision(projectile, jeu)
         if collision:
             collision["est_vivant"] = False
+            jeu["scores"]["actuel"] += 10
             jeu["projectiles"].remove(projectile)
 
 
@@ -43,15 +45,30 @@ def afficher(jeu):
     projectiles(jeu)
     joueur_module.afficher(jeu)
     ennemi_module.afficher(jeu)
+    scores_module.afficher(jeu)
 
-    if ennemi_module.collision(jeu["joueur"], jeu):
-        jeu["joueur"]["est_vivant"] = False  # Enclenche l'animation de mort
+    ennemi_collision = ennemi_module.collision(jeu["joueur"], jeu)
+    if ennemi_collision:
+        if jeu["joueur"]["vies"] == 0:
+            jeu["joueur"]["est_vivant"] = False  # Enclenche l'animation de mort
 
-        jeu["statut"] = 2
+            jeu["statut"] = 2
 
-        jeu.pop("joueur")
-        jeu.pop("ennemis")
-        jeu.pop("projectiles")
+            if jeu["scores"]["actuel"] > jeu["scores"]["record"]:
+                jeu["scores"]["record"] = jeu["scores"]["actuel"]
+
+                fichier_record = open("data/record.txt", "w")
+                fichier_record.write(str(jeu["scores"]["record"]))
+                fichier_record.close()
+
+            jeu["scores"]["actuel"] = 0
+
+            jeu.pop("joueur")
+            jeu.pop("ennemis")
+            jeu.pop("projectiles")
+        else:
+            ennemi_collision["est_vivant"] = False
+            jeu["joueur"]["vies"] -= 1
 
 
 def clavier(jeu):

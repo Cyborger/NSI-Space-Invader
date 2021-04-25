@@ -27,8 +27,11 @@ def setup():
         Valeurs principales:
             - statut: Nombre entier qui défini le statut du jeu
                 (0 = Menu principal; 1 = Jeu en cours; 2 = "Game Over"; 3 = Options)
+            - scores: Dictionnaire qui comprend les deux scores du jeu
+                ("actuel": Utilisé pendant le jeu; "record": Stocke le record dans cette valeur et aussi dans un fichier
             - images: Dictionnaire qui charge les images du jeu
             - polices: Dictionnaire qui charge les polices d'écriture du jeu
+            - couleurs: Dictionnaire qui indique les couleurs utilisés
         Valeurs utilisés pour l'affichage du menu:
             - boutons: Liste qui indique les boutons du menu
             - curseur: Nombre entier qui indique le bouton sélectionné par l'utilisateur
@@ -43,6 +46,8 @@ def setup():
             - largeur / longueur: Nombres décimaux qui indiquent la largeur et la longueur de l'entité
                 (pour les collisions et la taille de l'image associé)
             - x / y: Nombres décimaux qui indiquent la position de l'entité dans l'espace
+        Propriétés pour le joueur:
+            - vies: Nombre entier qui indique le nombre de vies restantes au joueur
         Propriété partagée entre le joueur et les ennemis:
             - est_vivant: Booléen qui indique l'état de l'entité
         Propriétés partagées entre les ennemis et les projectiles:
@@ -53,8 +58,19 @@ def setup():
     """
     global jeu
 
+    # Récupération de la valeur record dans le fichier data/record.txt
+    fichier_record = open("data/record.txt", "r+")
+    record = fichier_record.read()
+    if record == "":  # Permet d'initialiser le fichier
+        fichier_record.write("0")
+        record = 0
+
     jeu = {
         "statut": 0,
+        "scores": {
+            "actuel": 0,
+            "record": int(record)
+        },
         "images": {
             "joueur": loadImage("data/images/joueur.png"),
             "projectile": loadImage("data/images/projectile.png"),
@@ -62,9 +78,13 @@ def setup():
         },
         "polices": {
             "retro": createFont("data/polices/retro.ttf", 28)
+        },
+        "couleurs": {
+            "terminal": (65, 255, 0)
         }
     }
 
+    fichier_record.close()
     size(600, 650)
 
 

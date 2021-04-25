@@ -47,7 +47,7 @@ def nouveau_ennemi(jeu):
         "y": 10,
         "longueur": 40 * facteur_taille,
         "largeur": 38 * facteur_taille,
-        "vitesse": random(0.5, 1),
+        "vitesse": 0.8,
         "orientation": randrange(-1, 2, 2),  # Défini aléatoirement une orientation positive ou négative (-1 ou 1)
         "est_vivant": True
     }
@@ -67,8 +67,9 @@ def afficher(jeu):
     """
     if "ennemis" not in jeu:  # Création des ennemis en début de jeu
         jeu["ennemis"] = []
-        for i in range(8):
-            nouveau_ennemi(jeu)
+
+    if len(jeu["ennemis"]) < 8 and (len(jeu["ennemis"]) < 3 or int(random(100)) == 0):
+        nouveau_ennemi(jeu)
 
     for ennemi in jeu["ennemis"][:]:  # Mise à jour des ennemis
         if (collision(ennemi, jeu) or  # Collision avec d'autres ennemis
