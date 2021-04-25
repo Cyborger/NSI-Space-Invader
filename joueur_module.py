@@ -1,12 +1,17 @@
-# -*- coding: utf-8 -*- Pour que l'interpréteur Python utilise l'encodage UTF-8 plutôt que l'encodage ASCII, voir https://docs.python.org/2/tutorial/interpreter.html#source-code-encoding
+# -*- coding: utf-8 -*- voir https://docs.python.org/2/tutorial/interpreter.html#source-code-encoding
+
+if False:
+    from lib.Processing3 import *
+
 
 def nouveau_projectile(jeu):
-    """Crée un nouveau projectile au niveau du joueur et l'ajoute dans la liste des projectiles dans la variable paramètre jeu.
+    """Crée un nouveau projectile au niveau du joueur et l'ajoute dans la liste des projectiles dans la variable
+    paramètre jeu.
     
     Paramètre:
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
-    jeu["projectiles"].append({ # Voir "Propriétés des entités" dans space_invader.pyde
+    jeu["projectiles"].append({  # Voir "Propriétés des entités" space_invader.pyde
         "x": jeu["joueur"]["x"],
         "y": jeu["joueur"]["y"] - jeu["joueur"]["largeur"] // 2,
         "longueur": 5,
@@ -14,6 +19,7 @@ def nouveau_projectile(jeu):
         "orientation": -1,
         "vitesse": 1
     })
+
 
 def afficher(jeu):
     """Affiche le joueur selon les propriétés disponibles dans la variable jeu. Initialise celles-ci le cas échéant.
@@ -29,7 +35,8 @@ def afficher(jeu):
             "largeur": 80,
             "est_vivant": True
         }
-    
-    image(jeu["images"]["joueur"], jeu["joueur"]["x"], jeu["joueur"]["y"], jeu["joueur"]["longueur"], jeu["joueur"]["largeur"])
+
+    image(jeu["images"]["joueur"], jeu["joueur"]["x"], jeu["joueur"]["y"], jeu["joueur"]["longueur"],
+          jeu["joueur"]["largeur"])
 
     # TODO Animation de mort du joueur
