@@ -1,6 +1,6 @@
 import menu_module
 import jeu_module
-import json  # Pour afficher la variable jeu dans un fichier json externe (debug.json)
+import json  # Pour afficher la variable jeu dans un fichier json externe (data/debug.json)
 
 if False:  # Me permet d'intégrer les fonctions Processing à mon éditeur
     from lib.Processing3 import *
@@ -8,12 +8,12 @@ if False:  # Me permet d'intégrer les fonctions Processing à mon éditeur
 
 def debug(output):
     """Affiche la valeur du paramètre output dans la console et l'écrit, après conversion au format JSON, dans le
-    fichier debug.json.
+    fichier data/debug.json.
     
     Paramètre:
         - output Any: Valeur à afficher. Peut être de tout type. Pas de valeur par défaut.
     """
-    debug = open("debug.json", "w")  # Mode d'écriture écrasant pour éviter une taille de fichier élevée
+    debug = open("data/debug.json", "w")  # Mode d'écriture écrasant pour éviter une taille de fichier élevée
     debug.write(json.dumps(output, skipkeys=True, sort_keys=True, indent=4,
                            default=lambda o: str(o)))  # Indique comment convertir les valeurs objet en str
     debug.close()

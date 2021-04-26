@@ -55,13 +55,9 @@ def afficher(jeu):
             jeu["statut"] = 2
 
             if jeu["scores"]["actuel"] > jeu["scores"]["record"]:
-                jeu["scores"]["record"] = jeu["scores"]["actuel"]
-
-                fichier_record = open("data/record.txt", "w")
+                fichier_record = open("data/record.txt", "w")  # Inscrit le record dans un fichier pour le sauvegarder
                 fichier_record.write(str(jeu["scores"]["record"]))
                 fichier_record.close()
-
-            jeu["scores"]["actuel"] = 0
 
             jeu.pop("joueur")
             jeu.pop("ennemis")

@@ -11,8 +11,10 @@ def interface(jeu):
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
     background(0)
-    fill(*jeu["couleurs"]["terminal"]) # L'étoile permet d'extraire les valeurs du tuple
+    fill(*jeu["couleurs"]["terminal"])  # L'étoile permet d'extraire les valeurs du tuple
     textAlign(CENTER)  # Centre le texte
+
+    sous_titre = ""  # Permet d'afficher un sous titre selon le statut de jeu
 
     # Définition éléments interface selon le statut du jeu
     if jeu["statut"] == 0:  # Menu principal
@@ -21,13 +23,23 @@ def interface(jeu):
     elif jeu["statut"] == 2:  # Menu "Game Over"
         titre = "Game Over"
         jeu["boutons"] = ["Recommencer", "Menu Principal"]
+
+        if jeu["scores"]["actuel"] > jeu["scores"]["record"]:
+            sous_titre += "*NOUVEAU RECORD*\n"  # Met en valeur le score si c'est un nouveau record
+
+        sous_titre += "Score: " + str(jeu["scores"]["actuel"])
     else:  # Options
         titre = "Options"
         jeu["boutons"] = []
 
     # Titre
     textFont(jeu["polices"]["retro"], 48)
-    text(titre, width // 2, height // 2 - 100)
+    text(titre, width // 2, height // 2 - 150)
+
+    # Sous-titre (si défini)
+    if sous_titre != "":
+        textSize(20)
+        text(sous_titre, width // 2, height // 2 - 120)
 
     # Boutons
     textFont(jeu["polices"]["retro"])
@@ -61,6 +73,11 @@ def boutons(jeu):
         else:  # Bouton Quitter
             exit()
     elif jeu["statut"] == 2:
+        if jeu["scores"]["actuel"] > jeu["scores"]["record"]:
+            jeu["scores"]["record"] = jeu["scores"]["actuel"]  # Met à jour le record s'il est supérieur à l'ancien
+
+        jeu["scores"]["actuel"] = 0  # Remise à zéro du score pour la prochaine partie
+
         if jeu["curseur"] == 0:  # Bouton Recommencer
             jeu["statut"] = 1
         else:  # Bouton Menu Principal
