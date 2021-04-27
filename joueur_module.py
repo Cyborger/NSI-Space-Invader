@@ -11,6 +11,10 @@ def nouveau_projectile(jeu):
     Paramètre:
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
+    if not frameCount > jeu["joueur"]["frame_projectile"] + 30:
+        return
+
+    jeu["joueur"]["frame_projectile"] = frameCount
     jeu["projectiles"].append({  # Voir "Propriétés des entités" space_invader.pyde
         "x": jeu["joueur"]["x"],
         "y": jeu["joueur"]["y"] - jeu["joueur"]["largeur"] // 2,
@@ -34,10 +38,10 @@ def afficher(jeu):
             "longueur": 80,
             "largeur": 80,
             "vies": 3,
+            "frame_projectile": 0,
             "est_vivant": True
         }
 
-    image(jeu["images"]["joueur"], jeu["joueur"]["x"], jeu["joueur"]["y"], jeu["joueur"]["longueur"],
-          jeu["joueur"]["largeur"])
-
-    # TODO Animation de mort du joueur
+    if jeu["joueur"]["est_vivant"] or (not jeu["joueur"]["est_vivant"] and frameCount // 15 % 2 == 0):
+        image(jeu["images"]["joueur"], jeu["joueur"]["x"], jeu["joueur"]["y"], jeu["joueur"]["longueur"],
+              jeu["joueur"]["largeur"])

@@ -28,9 +28,42 @@ def projectiles(jeu):
 
         collision = ennemi_module.collision(projectile, jeu)
         if collision:
-            collision["est_vivant"] = False
-            jeu["scores"]["actuel"] += 10
             jeu["projectiles"].remove(projectile)
+            jeu["scores"]["actuel"] += 10
+            collision["frame_mort"] = frameCount  # Permet le fonctionnement de l'animation de l'entité touché
+            collision["est_vivant"] = False
+
+
+def remise_a_zero(jeu):
+    """Permet de rendre les valeurs initiales aux clés ennemis; projectiles; joueur['x'] et joueur['est_vivant'].
+    Utile lorsque le jeu doit être remis à zéro sans changer de statut de jeu.
+
+    Paramètre:
+        - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
+    """
+    jeu["ennemis"] = []
+    jeu["projectiles"] = []
+    jeu["joueur"]["x"] = width // 2
+    jeu["joueur"]["est_vivant"] = True
+
+
+def game_over(jeu):
+    """Permet le passage 'fluide' au menu Game Over. Assure l'enregistrement du score dans le fichier data/record.txt.
+    Supprime les clés 'joueur'; 'ennemis'; 'projectiles' du paramètre jeu.
+
+    Paramètre:
+        - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
+    """
+    if jeu["scores"]["actuel"] > jeu["scores"]["record"]:
+        fichier_record = open("data/record.txt", "w")  # Inscrit le record dans un fichier pour le sauvegarder
+        fichier_record.write(str(jeu["scores"]["record"]))
+        fichier_record.close()
+
+    jeu.pop("joueur")
+    jeu.pop("ennemis")
+    jeu.pop("projectiles")
+
+    jeu["statut"] = 2
 
 
 def afficher(jeu):
@@ -42,29 +75,24 @@ def afficher(jeu):
     background(0)
     imageMode(CENTER)  # Centre les images
 
-    projectiles(jeu)
     joueur_module.afficher(jeu)
     ennemi_module.afficher(jeu)
     scores_module.afficher(jeu)
 
+    if jeu["joueur"]["est_vivant"]:
+        projectiles(jeu)
+
     ennemi_collision = ennemi_module.collision(jeu["joueur"], jeu)
-    if ennemi_collision:
+    if ennemi_collision and jeu["joueur"]["est_vivant"]:
+        jeu["joueur"]["est_vivant"] = False  # Enclenche l'animation de mort
+        jeu["joueur"]["frame_mort"] = frameCount
+
+    if not jeu["joueur"]["est_vivant"] and frameCount > jeu["joueur"]["frame_mort"] + 90:
         if jeu["joueur"]["vies"] == 0:
-            jeu["joueur"]["est_vivant"] = False  # Enclenche l'animation de mort
-
-            jeu["statut"] = 2
-
-            if jeu["scores"]["actuel"] > jeu["scores"]["record"]:
-                fichier_record = open("data/record.txt", "w")  # Inscrit le record dans un fichier pour le sauvegarder
-                fichier_record.write(str(jeu["scores"]["record"]))
-                fichier_record.close()
-
-            jeu.pop("joueur")
-            jeu.pop("ennemis")
-            jeu.pop("projectiles")
+            game_over(jeu)
         else:
-            ennemi_collision["est_vivant"] = False
             jeu["joueur"]["vies"] -= 1
+            remise_a_zero(jeu)
 
 
 def clavier(jeu):
@@ -73,6 +101,9 @@ def clavier(jeu):
     Paramètre:
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
+    if not jeu["joueur"]["est_vivant"]:  # Empêche le mouvement du joueur s'il est mort
+        return
+
     # Mouvement du joueur
     if keyCode == RIGHT and jeu["joueur"]["x"] < width - 50:  # Le joueur ne dépasse pas la fenêtre
         jeu["joueur"]["x"] += 10

@@ -24,10 +24,10 @@ def interface(jeu):
         titre = "Game Over"
         jeu["boutons"] = ["Recommencer", "Menu Principal"]
 
-        if jeu["scores"]["actuel"] > jeu["scores"]["record"]:
-            sous_titre += "*NOUVEAU RECORD*\n"  # Met en valeur le score si c'est un nouveau record
-
         sous_titre += "Score: " + str(jeu["scores"]["actuel"])
+
+        if jeu["scores"]["actuel"] > jeu["scores"]["record"]:
+            sous_titre += "\n*NOUVEAU RECORD*"  # Met en valeur le score si c'est un nouveau record
     else:  # Options
         titre = "Options"
         jeu["boutons"] = []
