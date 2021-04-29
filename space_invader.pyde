@@ -1,5 +1,6 @@
 import menu_module
 import jeu_module
+import sauvegarde_module
 import json  # Pour afficher la variable jeu dans un fichier json externe (data/debug.json)
 
 if False:  # Me permet d'intégrer les fonctions Processing à mon éditeur
@@ -14,8 +15,8 @@ def debug(output):
         - output Any: Valeur à afficher. Peut être de tout type. Pas de valeur par défaut.
     """
     debug = open("data/debug.json", "w")  # Mode d'écriture écrasant pour éviter une taille de fichier élevée
-    debug.write(json.dumps(output, skipkeys=True, sort_keys=True, indent=4,
-                           default=lambda o: str(o)))  # Indique comment convertir les valeurs objet en str
+    json.dump(output, debug, skipkeys=True, sort_keys=True, indent=4,
+              default=lambda o: str(o))  # Indique comment convertir les valeurs objet en str
     debug.close()
 
 
@@ -58,18 +59,13 @@ def setup():
     """
     global jeu
 
-    # Récupération de la valeur record dans le fichier data/record.txt
-    fichier_record = open("data/record.txt", "r+")
-    record = fichier_record.read()
-    if record == "":  # Permet d'initialiser le fichier
-        fichier_record.write("0")
-        record = 0
+    sauvegarde = sauvegarde_module.charger()   # Récupération de la valeur record dans le fichier data/sauvegarde.json
 
     jeu = {
         "statut": 0,
         "scores": {
             "actuel": 0,
-            "record": int(record)
+            "record": sauvegarde["record"]
         },
         "images": {
             "joueur": loadImage("data/images/joueur.png"),
@@ -83,8 +79,6 @@ def setup():
             "terminal": (65, 255, 0)
         }
     }
-
-    fichier_record.close()
     size(600, 650)
 
 

@@ -2,6 +2,7 @@
 import joueur_module
 import ennemi_module
 import scores_module
+import sauvegarde_module
 
 if False:
     from lib.Processing3 import *
@@ -55,9 +56,11 @@ def game_over(jeu):
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
     if jeu["scores"]["actuel"] > jeu["scores"]["record"]:
-        fichier_record = open("data/record.txt", "w")  # Inscrit le record dans un fichier pour le sauvegarder
-        fichier_record.write(str(jeu["scores"]["record"]))
-        fichier_record.close()
+        sauvegarde = sauvegarde_module.charger()
+
+        sauvegarde["record"] = jeu["scores"]["actuel"]
+
+        sauvegarde_module.sauvegarder(sauvegarde)
 
     jeu.pop("joueur")
     jeu.pop("ennemis")
@@ -77,10 +80,11 @@ def afficher(jeu):
 
     joueur_module.afficher(jeu)
     ennemi_module.afficher(jeu)
-    scores_module.afficher(jeu)
 
     if jeu["joueur"]["est_vivant"]:
         projectiles(jeu)
+
+    scores_module.afficher(jeu)
 
     ennemi_collision = ennemi_module.collision(jeu["joueur"], jeu)
     if ennemi_collision and jeu["joueur"]["est_vivant"]:
