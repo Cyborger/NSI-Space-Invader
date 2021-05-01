@@ -21,8 +21,8 @@ def projectiles(jeu):
     for projectile in jeu["projectiles"][:]:  # Itère sur copie de jeu["projectiles"] afin de supprimer ses éléments
         projectile["y"] += 5 * projectile["orientation"] * projectile["vitesse"]  # Mouvement projectile
 
-        image(jeu["images"]["projectile"], projectile["x"], projectile["y"], projectile["longueur"],
-              projectile["largeur"])
+        image(jeu["images"][jeu["options"]["couleur"]]["projectile"], projectile["x"], projectile["y"],
+              projectile["longueur"], projectile["largeur"])
 
         if projectile["y"] < 0:  # Suppression projectiles non affichés par soucis de performances
             jeu["projectiles"].remove(projectile)

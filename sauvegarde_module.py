@@ -21,7 +21,7 @@ def charger():
     sauvegarde = fichier_sauvegarde.read()  # Permet de récupérer le contenu du fichier
 
     if sauvegarde == "":  # Permet d'initialiser le fichier s'il est vide
-        sauvegarde = {"record": 0, "couleurs": "terminal"}
+        sauvegarde = {"record": 0, "couleur": "vert"}
         json.dump(sauvegarde, fichier_sauvegarde)
     else:
         sauvegarde = json.loads(sauvegarde)  # Permet de charger les valeurs du fichier en dictionnaire

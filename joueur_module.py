@@ -43,5 +43,5 @@ def afficher(jeu):
         }
 
     if jeu["joueur"]["est_vivant"] or (not jeu["joueur"]["est_vivant"] and frameCount // 15 % 2 == 0):
-        image(jeu["images"]["joueur"], jeu["joueur"]["x"], jeu["joueur"]["y"], jeu["joueur"]["longueur"],
-              jeu["joueur"]["largeur"])
+        image(jeu["images"][jeu["options"]["couleur"]]["joueur"], jeu["joueur"]["x"], jeu["joueur"]["y"],
+              jeu["joueur"]["longueur"], jeu["joueur"]["largeur"])

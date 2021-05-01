@@ -10,13 +10,13 @@ def afficher(jeu):
     rect(0, 0, width, 25)
 
     # Vies restantes
-    fill(*jeu["couleurs"]["terminal"])
+    fill(*jeu["couleurs"][jeu["options"]["couleur"]])
     textSize(20)
     textAlign(LEFT)
     text("VIES:", width - 145, 20)
 
     for i in range(jeu["joueur"]["vies"]):
-        image(jeu["images"]["joueur"], width - 65 + 25 * i, 12, 20, 20)
+        image(jeu["images"][jeu["options"]["couleur"]]["joueur"], width - 65 + 25 * i, 12, 20, 20)
 
     # Scores
     text("SCORE: " + str(jeu["scores"]["actuel"]), 5, 20)

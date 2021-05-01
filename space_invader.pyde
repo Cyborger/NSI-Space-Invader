@@ -30,7 +30,7 @@ def setup():
                 (0 = Menu principal; 1 = Jeu en cours; 2 = "Game Over"; 3 = Options)
             - scores: Dictionnaire qui comprend les deux scores du jeu
                 ("actuel": Utilisé pendant le jeu; "record": Stocke le record dans cette valeur et aussi dans un fichier
-            - images: Dictionnaire qui charge les images du jeu
+            - images: Dictionnaire qui charge les images du jeu en sous-catégorie de couleurs
             - polices: Dictionnaire qui charge les polices d'écriture du jeu
             - couleurs: Dictionnaire qui indique les couleurs utilisés
         Valeurs utilisés pour l'affichage du menu:
@@ -67,18 +67,28 @@ def setup():
             "actuel": 0,
             "record": sauvegarde["record"]
         },
-        "images": {
-            "joueur": loadImage("data/images/joueur.png"),
-            "projectile": loadImage("data/images/projectile.png"),
-            "ennemi": loadImage("data/images/ennemi.png")
-        },
+        "images": {},
         "polices": {
             "retro": createFont("data/polices/retro.ttf", 28)
         },
         "couleurs": {
-            "terminal": (65, 255, 0)
+            "rouge": (139, 0, 0),  # RGB inexact intentionnel
+            "vert": (65, 255, 0),
+            "bleu": (46, 207, 255),
+            "blanc": (255, 255, 255)
+        },
+        "options": {
+            "couleur": sauvegarde["couleur"]
         }
     }
+
+    # Partie qui s'occupe du chargement des images de différentes couleurs
+    images = ["ennemi", "joueur", "projectile"]  # Possibilité d'utiliser os.path mais non nécessaire dans mon cas
+    for couleur in jeu["couleurs"].keys():  # Permet d'itérer sur ["vert", "bleu", "blanc"]
+        jeu["images"][couleur] = {}
+        for image in images:
+            jeu["images"][couleur][image] = loadImage("data/images/" + couleur + "/" + image + ".png")
+
     size(600, 650)
 
 
@@ -86,29 +96,27 @@ def draw():
     """https://py.processing.org/reference/draw.html"""
     debug(jeu)
 
-    if jeu["statut"] == 0 or jeu["statut"] == 2:
-        menu_module.interface(jeu)
-    elif jeu["statut"] == 1:
+    if jeu["statut"] == 1:
         jeu_module.afficher(jeu)
     else:
-        pass
+        menu_module.interface(jeu)
 
 
 def keyPressed():
     """https://py.processing.org/reference/keyPressed.html
     Permet au joueur d'intéragir avec ses touches du clavier.
     """
-    if jeu["statut"] == 0 or jeu["statut"] == 2:
-        menu_module.clavier(jeu)
-    elif jeu["statut"] == 1:
+    if jeu["statut"] == 1:
         jeu_module.clavier(jeu)
+    else:
+        menu_module.clavier(jeu)
 
 
 def mouseMoved():
     """https://py.processing.org/reference/mouseMoved.html
     Permet au joueur d'intéragir en bougeant sa souris.
     """
-    if jeu["statut"] == 0 or jeu["statut"] == 2:
+    if jeu["statut"] != 1:
         menu_module.souris(jeu, False)
 
 
@@ -116,5 +124,5 @@ def mouseClicked():
     """https://py.processing.org/reference/mouseClicked.html
     Permet au joueur d'intéragir en cliquant avec sa souris.
     """
-    if jeu["statut"] == 0 or jeu["statut"] == 2:
+    if jeu["statut"] != 1:
         menu_module.souris(jeu, True)

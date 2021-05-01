@@ -104,7 +104,8 @@ def afficher(jeu):
 
         # Affichage de l'ennemi (en vie ou intervalle périodique de 2 secondes si non vivant)
         if ennemi["est_vivant"] or (frameCount // 15 % 2 == 0 and jeu["joueur"]["est_vivant"]):
-            image(jeu["images"]["ennemi"], ennemi["x"], ennemi["y"], ennemi["longueur"], ennemi["largeur"])
+            image(jeu["images"][jeu["options"]["couleur"]]["ennemi"], ennemi["x"], ennemi["y"], ennemi["longueur"],
+                  ennemi["largeur"])
 
         # Supprime l'ennemi immédiatement si le joueur est mort
         # Supprime l'ennemi après 3 secondes d'animation de clignotement si le joueur est vivant
