@@ -78,7 +78,8 @@ def setup():
             "blanc": (255, 255, 255)
         },
         "options": {
-            "couleur": sauvegarde["couleur"]
+            "couleur": sauvegarde["couleur"],
+            "vies": sauvegarde["vies"]
         }
     }
 

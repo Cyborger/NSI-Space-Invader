@@ -32,7 +32,11 @@ def interface(jeu):
             sous_titre += "\n*NOUVEAU RECORD*"  # Met en valeur le score si c'est un nouveau record
     else:  # Options
         titre = "Options"
-        jeu["boutons"] = ["Couleur HUD : " + jeu["options"]["couleur"], "Menu Principal"]
+        jeu["boutons"] = [
+            "Couleur HUD : " + jeu["options"]["couleur"],
+            "Vies joueur : " + str(jeu["options"]["vies"]),
+            "Menu Principal",
+        ]
 
     # Titre
     textFont(jeu["polices"]["retro"], 48)
@@ -67,6 +71,9 @@ def boutons(jeu):
     Paramètre:
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
+    if "curseur" not in jeu:  # Évite l'exécution de la fonction si l'interface n'a pas encore été initialisée
+        return
+
     remise_a_zero = True  # Indique si les variables liés au menu dans la variable jeu doivent être supprimés
 
     if jeu["statut"] == 0:  # Utilisation de conditions imbriqués pour une meilleur lisibilité
@@ -97,6 +104,10 @@ def boutons(jeu):
                     break  # Permet d'éviter de modifier plusieurs fois la couleur
 
             sauvegarde["couleur"] = jeu["options"]["couleur"]
+            remise_a_zero = False
+        elif jeu["curseur"] == 1:  # Bouton Vies du joueur
+            vies = jeu["options"]["vies"]
+            jeu["options"]["vies"] = vies + 1 if vies < 3 else 1
             remise_a_zero = False
         else:
             jeu["statut"] = 0

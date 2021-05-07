@@ -86,13 +86,15 @@ def afficher(jeu):
 
     scores_module.afficher(jeu)
 
+    # Vérifie les collisions entre le joueur et les ennemis
     ennemi_collision = ennemi_module.collision(jeu["joueur"], jeu)
     if ennemi_collision and jeu["joueur"]["est_vivant"]:
         jeu["joueur"]["est_vivant"] = False  # Enclenche l'animation de mort
         jeu["joueur"]["frame_mort"] = frameCount
 
+    # 3 secondes après la mort du joueur, remise à zéro du plateau de jeu ou passage au Game Over
     if not jeu["joueur"]["est_vivant"] and frameCount > jeu["joueur"]["frame_mort"] + 90:
-        if jeu["joueur"]["vies"] == 0:
+        if jeu["joueur"]["vies"] == 1:  # Fin du jeu
             game_over(jeu)
         else:
             jeu["joueur"]["vies"] -= 1
