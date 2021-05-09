@@ -13,7 +13,8 @@ def charger():
     dictionnaire.
 
     Retourne:
-        - dict: Dictionnaire comportant les valeurs de data/sauvegarde.json"""
+        - dict: Dictionnaire comportant les valeurs de data/sauvegarde.json
+    """
     verification_integrite()
 
     # Récupération de la valeur record dans le fichier data/record.txt
@@ -26,7 +27,8 @@ def charger():
             "couleur": "vert",
             "vies": 3,
             "max_ennemis": 3,
-            "vitesse": 1
+            "vitesse": 1,
+            "debug": False
         }
         json.dump(sauvegarde, fichier_sauvegarde)
     else:

@@ -2,7 +2,6 @@
 import joueur_module
 import ennemi_module
 import scores_module
-import sauvegarde_module
 
 if False:
     from lib.Processing3 import *
@@ -56,11 +55,7 @@ def game_over(jeu):
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
     if jeu["score"] > jeu["sauvegarde"]["record"]:
-        sauvegarde = sauvegarde_module.charger()  # Sauvegarde le score dans le fichier sauvegarde
-
-        sauvegarde["record"] = jeu["score"]
-
-        sauvegarde_module.sauvegarder(sauvegarde)
+        jeu["sauvegarde"]["record"] = jeu["score"]
 
     jeu.pop("joueur")
     jeu.pop("ennemis")

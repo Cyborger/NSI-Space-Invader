@@ -88,7 +88,8 @@ def setup():
 
 def draw():
     """https://py.processing.org/reference/draw.html"""
-    debug(jeu)
+    if jeu["sauvegarde"]["debug"]:
+        debug(jeu)
 
     if jeu["statut"] == 1:
         jeu_module.afficher(jeu)
