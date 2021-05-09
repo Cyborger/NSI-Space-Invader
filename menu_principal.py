@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- voir https://docs.python.org/2/tutorial/interpreter.html#source-code-encoding
 
 if False:
-    from ..lib.Processing3 import *
+    from lib.Processing3 import *
 
 
 def interface(jeu):

@@ -2,6 +2,7 @@
 import joueur_module
 import ennemi_module
 import scores_module
+import sauvegarde_module
 
 if False:
     from lib.Processing3 import *
@@ -48,14 +49,18 @@ def remise_a_zero(jeu):
 
 
 def game_over(jeu):
-    """Permet le passage 'fluide' au menu Game Over. Assure l'enregistrement du score dans le fichier data/record.txt.
+    """Permet le passage 'fluide' au menu Game Over. Assure l'enregistrement du score dans le fichier de sauvegarde.
     Supprime les clés 'joueur'; 'ennemis'; 'projectiles' du paramètre jeu.
 
     Paramètre:
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
-    if jeu["score"] > jeu["sauvegarde"]["record"]:
-        jeu["sauvegarde"]["record"] = jeu["score"]
+    if jeu["score"] > jeu["sauvegarde"]["record"]:  # Pour seulement enregistrer le score dans le fichier
+        sauvegarde = jeu["sauvegarde"].copy()
+
+        sauvegarde["record"] = jeu["score"]
+
+        sauvegarde_module.sauvegarder(sauvegarde)
 
     jeu.pop("joueur")
     jeu.pop("ennemis")
