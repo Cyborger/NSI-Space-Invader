@@ -47,7 +47,7 @@ def nouveau_ennemi(jeu):
         "y": 10,
         "longueur": 40 * facteur_taille,
         "largeur": 38 * facteur_taille,
-        "vitesse": 0.8,
+        "vitesse": 0.8 * jeu["sauvegarde"]["vitesse"],
         "orientation": randrange(-1, 2, 2),  # Défini aléatoirement une orientation positive ou négative (-1 ou 1)
         "est_vivant": True
     }
@@ -94,7 +94,7 @@ def afficher(jeu):
     if "ennemis" not in jeu:  # Création des ennemis en début de jeu
         jeu["ennemis"] = []
 
-    if len(jeu["ennemis"]) < 8 and (len(jeu["ennemis"]) < 3 or int(random(100)) == 0):
+    if len(jeu["ennemis"]) < jeu["sauvegarde"]["max_ennemis"] and (len(jeu["ennemis"]) < 3 or int(random(100)) == 0):
         nouveau_ennemi(jeu)
 
     for ennemi in jeu["ennemis"][:]:
@@ -104,7 +104,7 @@ def afficher(jeu):
 
         # Affichage de l'ennemi (en vie ou intervalle périodique de 2 secondes si non vivant)
         if ennemi["est_vivant"] or (frameCount // 15 % 2 == 0 and jeu["joueur"]["est_vivant"]):
-            image(jeu["images"][jeu["options"]["couleur"]]["ennemi"], ennemi["x"], ennemi["y"], ennemi["longueur"],
+            image(jeu["images"][jeu["sauvegarde"]["couleur"]]["ennemi"], ennemi["x"], ennemi["y"], ennemi["longueur"],
                   ennemi["largeur"])
 
         # Supprime l'ennemi immédiatement si le joueur est mort

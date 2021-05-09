@@ -63,10 +63,6 @@ def setup():
 
     jeu = {
         "statut": 0,
-        "scores": {
-            "actuel": 0,
-            "record": sauvegarde["record"]
-        },
         "images": {},
         "polices": {
             "retro": createFont("data/polices/retro.ttf", 28)
@@ -77,10 +73,7 @@ def setup():
             "bleu": (46, 207, 255),
             "blanc": (255, 255, 255)
         },
-        "options": {
-            "couleur": sauvegarde["couleur"],
-            "vies": sauvegarde["vies"]
-        }
+        "sauvegarde": sauvegarde
     }
 
     # Partie qui s'occupe du chargement des images de différentes couleurs

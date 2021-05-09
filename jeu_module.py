@@ -21,7 +21,7 @@ def projectiles(jeu):
     for projectile in jeu["projectiles"][:]:  # Itère sur copie de jeu["projectiles"] afin de supprimer ses éléments
         projectile["y"] += 5 * projectile["orientation"] * projectile["vitesse"]  # Mouvement projectile
 
-        image(jeu["images"][jeu["options"]["couleur"]]["projectile"], projectile["x"], projectile["y"],
+        image(jeu["images"][jeu["sauvegarde"]["couleur"]]["projectile"], projectile["x"], projectile["y"],
               projectile["longueur"], projectile["largeur"])
 
         if projectile["y"] < 0:  # Suppression projectiles non affichés par soucis de performances
@@ -30,7 +30,7 @@ def projectiles(jeu):
         collision = ennemi_module.collision(projectile, jeu)
         if collision:
             jeu["projectiles"].remove(projectile)
-            jeu["scores"]["actuel"] += 10
+            jeu["score"] += 10
             collision["frame_mort"] = frameCount  # Permet le fonctionnement de l'animation de l'entité touché
             collision["est_vivant"] = False
 
@@ -55,10 +55,10 @@ def game_over(jeu):
     Paramètre:
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
-    if jeu["scores"]["actuel"] > jeu["scores"]["record"]:
-        sauvegarde = sauvegarde_module.charger()
+    if jeu["score"] > jeu["sauvegarde"]["record"]:
+        sauvegarde = sauvegarde_module.charger()  # Sauvegarde le score dans le fichier sauvegarde
 
-        sauvegarde["record"] = jeu["scores"]["actuel"]
+        sauvegarde["record"] = jeu["score"]
 
         sauvegarde_module.sauvegarder(sauvegarde)
 

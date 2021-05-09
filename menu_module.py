@@ -12,7 +12,7 @@ def interface(jeu):
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
     background(0)
-    fill(*jeu["couleurs"][jeu["options"]["couleur"]])  # L'étoile permet d'extraire les valeurs du tuple
+    fill(*jeu["couleurs"][jeu["sauvegarde"]["couleur"]])  # L'étoile permet d'extraire les valeurs du tuple
     textAlign(CENTER)  # Centre le texte
 
     sous_titre = ""  # Permet d'afficher un sous titre selon le statut de jeu
@@ -26,15 +26,17 @@ def interface(jeu):
         titre = "Game Over"
         jeu["boutons"] = ["Recommencer", "Menu Principal"]
 
-        sous_titre += "Score: " + str(jeu["scores"]["actuel"])
+        sous_titre += "Score: " + str(jeu["score"])
 
-        if jeu["scores"]["actuel"] > jeu["scores"]["record"]:
+        if jeu["score"] > jeu["sauvegarde"]["record"]:
             sous_titre += "\n*NOUVEAU RECORD*"  # Met en valeur le score si c'est un nouveau record
     else:  # Options
         titre = "Options"
         jeu["boutons"] = [
-            "Couleur HUD : " + jeu["options"]["couleur"],
-            "Vies joueur : " + str(jeu["options"]["vies"]),
+            "Couleur HUD : " + jeu["sauvegarde"]["couleur"],
+            "Vies joueur : " + str(jeu["sauvegarde"]["vies"]),
+            "Ennemis max : " + str(jeu["sauvegarde"]["max_ennemis"]),
+            "Facteur vitesse : " + str(jeu["sauvegarde"]["vitesse"]),
             "Menu Principal",
         ]
 
@@ -84,35 +86,37 @@ def boutons(jeu):
         else:  # Bouton Quitter
             exit()
     elif jeu["statut"] == 2:
-        if jeu["scores"]["actuel"] > jeu["scores"]["record"]:
-            jeu["scores"]["record"] = jeu["scores"]["actuel"]  # Met à jour le record s'il est supérieur à l'ancien
+        if jeu["score"] > jeu["sauvegarde"]["record"]:
+            jeu["sauvegarde"]["record"] = jeu["score"]  # Met à jour le record s'il est supérieur à l'ancien
 
-        jeu["scores"]["actuel"] = 0  # Remise à zéro du score pour la prochaine partie
+        jeu.pop("score")
 
         if jeu["curseur"] == 0:  # Bouton Recommencer
             jeu["statut"] = 1
         else:  # Bouton Menu Principal
             jeu["statut"] = 0
     else:
-        sauvegarde = sauvegarde_module.charger()  # Pour sauvegarder les paramètres
+        remise_a_zero = False
 
         if jeu["curseur"] == 0:  # Bouton Couleurs
             couleurs = jeu["couleurs"].keys()
             for i in range(len(couleurs)):  # Permet d'aller à la couleur "suivante" parmis la liste des couleurs
-                if jeu["options"]["couleur"] == couleurs[i]:
-                    jeu["options"]["couleur"] = couleurs[i + 1] if i + 1 < len(couleurs) else couleurs[0]
+                if jeu["sauvegarde"]["couleur"] == couleurs[i]:
+                    jeu["sauvegarde"]["couleur"] = couleurs[i + 1] if i + 1 < len(couleurs) else couleurs[0]
                     break  # Permet d'éviter de modifier plusieurs fois la couleur
 
-            sauvegarde["couleur"] = jeu["options"]["couleur"]
-            remise_a_zero = False
         elif jeu["curseur"] == 1:  # Bouton Vies du joueur
-            vies = jeu["options"]["vies"]
-            jeu["options"]["vies"] = vies + 1 if vies < 3 else 1
-            remise_a_zero = False
+            vies = jeu["sauvegarde"]["vies"]
+            jeu["sauvegarde"]["vies"] = vies + 1 if vies < 3 else 1
+        elif jeu["curseur"] == 2:  # Bouton Ennemis max (pour définir le nombre d'ennemi maximum à l'écran)
+            ennemis_max = jeu["sauvegarde"]["max_ennemis"]
+            jeu["sauvegarde"]["max_ennemis"] = ennemis_max + 3 if ennemis_max < 9 else 3
+        elif jeu["curseur"] == 3:  # Bouton Vitesse (pour changer le facteur de vitesse du jeu)
+            vitesse = jeu["sauvegarde"]["vitesse"]
+            jeu["sauvegarde"]["vitesse"] = vitesse + 1 if vitesse < 3 else 1
         else:
             jeu["statut"] = 0
-
-        sauvegarde_module.sauvegarder(sauvegarde)
+            remise_a_zero = True
 
     if remise_a_zero:  # Retrait variables liées à l'affichage du menu
         jeu.pop("curseur")

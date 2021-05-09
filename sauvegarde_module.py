@@ -3,7 +3,7 @@ import json
 
 
 def verification_integrite():
-    """Permet de s'assurer que le fichier de sauvegarde data/sauvegarde.json existe. Le créer le cas échéant."""
+    """Permet de s'assurer que le fichier de sauvegarde data/sauvegarde.json existe pour le créer le cas échéant."""
     fichier_sauvegarde = open("data/sauvegarde.json", "a")
     fichier_sauvegarde.close()
 
@@ -21,10 +21,12 @@ def charger():
     sauvegarde = fichier_sauvegarde.read()  # Permet de récupérer le contenu du fichier
 
     if sauvegarde == "":  # Permet d'initialiser le fichier s'il est vide
-        sauvegarde = {
+        sauvegarde = {  # Valeurs du fichier sauvegarde par défaut
             "record": 0,
             "couleur": "vert",
-            "vies": 3
+            "vies": 3,
+            "max_ennemis": 3,
+            "vitesse": 1
         }
         json.dump(sauvegarde, fichier_sauvegarde)
     else:

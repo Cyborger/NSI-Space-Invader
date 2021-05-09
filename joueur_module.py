@@ -21,7 +21,7 @@ def nouveau_projectile(jeu):
         "longueur": 5,
         "largeur": 5,
         "orientation": -1,
-        "vitesse": 1
+        "vitesse": jeu["sauvegarde"]["vitesse"]
     })
 
 
@@ -37,11 +37,11 @@ def afficher(jeu):
             "y": height - 80,
             "longueur": 80,
             "largeur": 80,
-            "vies": jeu["options"]["vies"],
+            "vies": jeu["sauvegarde"]["vies"],
             "frame_projectile": 0,
             "est_vivant": True
         }
 
     if jeu["joueur"]["est_vivant"] or (not jeu["joueur"]["est_vivant"] and frameCount // 15 % 2 == 0):
-        image(jeu["images"][jeu["options"]["couleur"]]["joueur"], jeu["joueur"]["x"], jeu["joueur"]["y"],
+        image(jeu["images"][jeu["sauvegarde"]["couleur"]]["joueur"], jeu["joueur"]["x"], jeu["joueur"]["y"],
               jeu["joueur"]["longueur"], jeu["joueur"]["largeur"])
