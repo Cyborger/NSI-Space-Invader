@@ -1,10 +1,7 @@
 import menu_module
 import jeu_module
 import sauvegarde_module
-import json  # Pour afficher la variable jeu dans un fichier json externe (data/debug.json)
-
-if False:  # Me permet d'intégrer les fonctions Processing à mon éditeur
-    from lib.Processing3 import *
+import json  # Pour afficher la variable jeu dans un fichier json externe lors du debug (data/debug.json)
 
 
 def debug(output):
@@ -22,40 +19,7 @@ def debug(output):
 
 def setup():
     """https://py.processing.org/reference/setup.html
-    Initialise et globalise la valeur jeu qui contient toutes les valeurs utilisés dans le jeu.
-    
-    Structure du dictionnaire jeu:
-        Valeurs principales:
-            - statut: Nombre entier qui défini le statut du jeu
-                (0 = Menu principal; 1 = Jeu en cours; 2 = "Game Over"; 3 = Options)
-            - scores: Dictionnaire qui comprend les deux scores du jeu
-                ("actuel": Utilisé pendant le jeu; "record": Stocke le record dans cette valeur et aussi dans un fichier
-            - images: Dictionnaire qui charge les images du jeu en sous-catégorie de couleurs
-            - polices: Dictionnaire qui charge les polices d'écriture du jeu
-            - couleurs: Dictionnaire qui indique les couleurs utilisés
-        Valeurs utilisés pour l'affichage du menu:
-            - boutons: Liste qui indique les boutons du menu
-            - curseur: Nombre entier qui indique le bouton sélectionné par l'utilisateur
-        Valeurs utilisés pour le fonctionnement du jeu:
-            - joueur: Dictionnaire qui contient les propriétés du joueur
-            - ennemis: Liste qui contient les propriétés de chaque ennemi séparé dans leur dictionnaire respectif
-            - projectiles: Liste qui contient les propriétés de chaque projectile (joueurs ou ennemis) dans leur
-                dictionnaire respectif
-        
-    Propriétés des entités (joueur, ennemis et projectiles):
-        Propriétés partagées entre tous:
-            - largeur / longueur: Nombres décimaux qui indiquent la largeur et la longueur de l'entité
-                (pour les collisions et la taille de l'image associé)
-            - x / y: Nombres décimaux qui indiquent la position de l'entité dans l'espace
-        Propriétés pour le joueur:
-            - vies: Nombre entier qui indique le nombre de vies restantes au joueur
-        Propriété partagée entre le joueur et les ennemis:
-            - est_vivant: Booléen qui indique l'état de l'entité
-        Propriétés partagées entre les ennemis et les projectiles:
-            - orientation: Nombre entier qui défini le sens vers lequel se dirige l'entité
-                (ennemis: -1 pour la gauche, 1 pour la droite; projectiles: -1 pour le haut, 1 pour le bas)
-            - vitesse: Nombre entier choisi aléatoirement entre 0.5 et 1 qui indique la vitesse de déplacement de
-                l'entité dans l'espace
+    Initialise la variable jeu qui contient toutes les propriétés utilisées dans le jeu.
     """
     global jeu
 
@@ -77,7 +41,7 @@ def setup():
     }
 
     # Partie qui s'occupe du chargement des images de différentes couleurs
-    images = ["ennemi", "joueur", "projectile"]  # Possibilité d'utiliser os.path mais non nécessaire dans mon cas
+    images = ["ennemi", "joueur", "projectile"]  # Possibilité d'utiliser os.path mais non nécessaire pour 3 images...
     for couleur in jeu["couleurs"].keys():  # Permet d'itérer sur ["vert", "bleu", "blanc"]
         jeu["images"][couleur] = {}
         for image in images:
@@ -88,7 +52,7 @@ def setup():
 
 def draw():
     """https://py.processing.org/reference/draw.html"""
-    if jeu["sauvegarde"]["debug"]:
+    if jeu["sauvegarde"]["debug"]:  # Utilisation d'une option modifiable par l'utilisateur car coûteuse en performances
         debug(jeu)
 
     if jeu["statut"] == 1:
@@ -99,7 +63,7 @@ def draw():
 
 def keyPressed():
     """https://py.processing.org/reference/keyPressed.html
-    Permet au joueur d'intéragir avec ses touches du clavier.
+    Permet au joueur d'interagir avec ses touches du clavier.
     """
     if jeu["statut"] == 1:
         jeu_module.clavier(jeu)
@@ -109,7 +73,7 @@ def keyPressed():
 
 def mouseMoved():
     """https://py.processing.org/reference/mouseMoved.html
-    Permet au joueur d'intéragir en bougeant sa souris.
+    Permet au joueur d'interagir en bougeant sa souris.
     """
     if jeu["statut"] != 1:
         menu_module.souris(jeu, False)
@@ -117,7 +81,7 @@ def mouseMoved():
 
 def mouseClicked():
     """https://py.processing.org/reference/mouseClicked.html
-    Permet au joueur d'intéragir en cliquant avec sa souris.
+    Permet au joueur d'interagir en cliquant avec sa souris.
     """
     if jeu["statut"] != 1:
         menu_module.souris(jeu, True)

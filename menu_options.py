@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*- voir https://docs.python.org/2/tutorial/interpreter.html#source-code-encoding
 import sauvegarde_module
 
-if False:
-    from lib.Processing3 import *
-
 
 def interface(jeu):
     """Retourne les éléments de l'interface pour le menu des options, défini également les boutons dans la variable jeu.

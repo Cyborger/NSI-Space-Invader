@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*- voir https://docs.python.org/2/tutorial/interpreter.html#source-code-encoding
-import menu_principal
+import menu_principal  # Pour les caractéristiques de chacun des menus
 import menu_game_over
 import menu_options
-
-if False:
-    from lib.Processing3 import *
 
 
 def interface(jeu):
@@ -14,15 +11,15 @@ def interface(jeu):
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
     background(0)
-    fill(*jeu["couleurs"][jeu["sauvegarde"]["couleur"]])  # L'étoile permet d'extraire les valeurs du tuple
-    textAlign(CENTER)  # Centre le texte
+    fill(*jeu["couleurs"][jeu["sauvegarde"]["couleur"]])  # * permet d'extraire les valeurs du tuple en paramètre
+    textAlign(CENTER)
 
     # Définition éléments interface selon le statut du jeu
-    if jeu["statut"] == 0:  # Menu principal
+    if jeu["statut"] == 0:
         elements = menu_principal.interface(jeu)
-    elif jeu["statut"] == 2:  # Menu "Game Over"
+    elif jeu["statut"] == 2:
         elements = menu_game_over.interface(jeu)
-    else:  # Options
+    else:
         elements = menu_options.interface(jeu)
 
     # Titre
@@ -35,8 +32,8 @@ def interface(jeu):
         text(elements["sous_titre"], width // 2, height // 2 - 120)
 
     # Boutons
-    textFont(jeu["polices"]["retro"])
-    longueur_max = 0  # Indique la longueur maximale atteinte par les boutons pour le placement du curseur
+    textSize(28)
+    longueur_max = 0  # Longueur maximale atteinte par les boutons. Permet d'aligner le curseur avec tous les boutons
 
     for i in range(len(jeu["boutons"])):
         text(jeu["boutons"][i], width // 2, height // 2 + 50 * i)
@@ -63,14 +60,14 @@ def boutons(jeu):
 
     remise_a_zero = True  # Indique si les variables liés au menu dans la variable jeu doivent être supprimés
 
-    if jeu["statut"] == 0:  # Utilisation de conditions imbriqués pour une meilleur lisibilité
+    if jeu["statut"] == 0:
         menu_principal.boutons(jeu)
     elif jeu["statut"] == 2:
         menu_game_over.boutons(jeu)
     else:
         remise_a_zero = menu_options.boutons(jeu)
 
-    if remise_a_zero:  # Retrait variables liées à l'affichage du menu
+    if remise_a_zero:  # Retrait variables liées à l'affichage du menu au changement de statut de jeu
         jeu.pop("curseur")
         jeu.pop("boutons")
 

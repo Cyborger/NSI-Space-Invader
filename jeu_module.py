@@ -4,40 +4,10 @@ import ennemi_module
 import scores_module
 import sauvegarde_module
 
-if False:
-    from lib.Processing3 import *
-
-
-def projectiles(jeu):
-    """Met à jour chacun des projectiles disponibles selon leurs propriétés disponibles dans la variable jeu.
-    Initialise une liste pour les contenir le cas échéant.
-
-    Paramètre:
-        - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
-    """
-    if "projectiles" not in jeu:
-        jeu["projectiles"] = []
-
-    for projectile in jeu["projectiles"][:]:  # Itère sur copie de jeu["projectiles"] afin de supprimer ses éléments
-        projectile["y"] += 5 * projectile["orientation"] * projectile["vitesse"]  # Mouvement projectile
-
-        image(jeu["images"][jeu["sauvegarde"]["couleur"]]["projectile"], projectile["x"], projectile["y"],
-              projectile["longueur"], projectile["largeur"])
-
-        if projectile["y"] < 0:  # Suppression projectiles non affichés par soucis de performances
-            jeu["projectiles"].remove(projectile)
-
-        collision = ennemi_module.collision(projectile, jeu)
-        if collision:
-            jeu["projectiles"].remove(projectile)
-            jeu["score"] += 10
-            collision["frame_mort"] = frameCount  # Permet le fonctionnement de l'animation de l'entité touché
-            collision["est_vivant"] = False
-
 
 def remise_a_zero(jeu):
-    """Permet de rendre les valeurs initiales aux clés ennemis; projectiles; joueur['x'] et joueur['est_vivant'].
-    Utile lorsque le jeu doit être remis à zéro sans changer de statut de jeu.
+    """Permet de rendre les valeurs initiales aux clés ennemis; projectiles; joueur['x'] et joueur['est_vivant'] du
+    dictionnaire jeu. Utile lorsque le jeu doit être remis à zéro sans changer de statut de jeu à la mort du joueur.
 
     Paramètre:
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
@@ -49,14 +19,14 @@ def remise_a_zero(jeu):
 
 
 def game_over(jeu):
-    """Permet le passage 'fluide' au menu Game Over. Assure l'enregistrement du score dans le fichier de sauvegarde.
+    """Permet le passage 'fluide' au menu Game Over en assurant l'enregistrement du score dans le fichier de sauvegarde.
     Supprime les clés 'joueur'; 'ennemis'; 'projectiles' du paramètre jeu.
 
     Paramètre:
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
-    if jeu["score"] > jeu["sauvegarde"]["record"]:  # Pour seulement enregistrer le score dans le fichier
-        sauvegarde = jeu["sauvegarde"].copy()
+    if jeu["score"] > jeu["sauvegarde"]["record"]:
+        sauvegarde = jeu["sauvegarde"].copy()  # Pour seulement enregistrer le score dans le fichier
 
         sauvegarde["record"] = jeu["score"]
 
@@ -76,13 +46,13 @@ def afficher(jeu):
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
     """
     background(0)
-    imageMode(CENTER)  # Centre les images
+    imageMode(CENTER)
 
     joueur_module.afficher(jeu)
     ennemi_module.afficher(jeu)
 
-    if jeu["joueur"]["est_vivant"]:
-        projectiles(jeu)
+    if jeu["joueur"]["est_vivant"]:  # Évite la gestion des projectiles à la mort du joueur
+        joueur_module.projectiles(jeu)
 
     scores_module.afficher(jeu)
 

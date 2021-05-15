@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*- voir https://docs.python.org/2/tutorial/interpreter.html#source-code-encoding
 from random import randrange
 
-if False:
-    from lib.Processing3 import *
-
 
 def collision(entite, jeu):
     """Vérifie si l'entité donnée dans le paramètre entite entre en collision avec un des ennemis de la liste
@@ -98,17 +95,17 @@ def afficher(jeu):
         nouveau_ennemi(jeu)
 
     for ennemi in jeu["ennemis"][:]:
-        # Mise à jour de l'ennemi vivant
+        # Mise à jour de l'ennemi si celui-ci ainsi que le joueur sont vivants
         if ennemi["est_vivant"] and jeu["joueur"]["est_vivant"]:
             mise_a_jour_ennemi(ennemi, jeu)
 
-        # Affichage de l'ennemi (en vie ou intervalle périodique de 2 secondes si non vivant)
+        # Affichage de l'ennemi (en vie ou intervalle périodique de 2 secondes si non vivant pour l'animation)
         if ennemi["est_vivant"] or (frameCount // 15 % 2 == 0 and jeu["joueur"]["est_vivant"]):
             image(jeu["images"][jeu["sauvegarde"]["couleur"]]["ennemi"], ennemi["x"], ennemi["y"], ennemi["longueur"],
                   ennemi["largeur"])
 
-        # Supprime l'ennemi immédiatement si le joueur est mort
-        # Supprime l'ennemi après 3 secondes d'animation de clignotement si le joueur est vivant
+        # Supprime l'ennemi immédiatement si celui-ci ainsi que le joueur sont morts (interrompt l'animation de mort)
+        # Supprime l'ennemi après 3 secondes d'animation de clignotement si le joueur est encore vivant
         if ((not ennemi["est_vivant"] and not jeu["joueur"]["est_vivant"]) or
                 (not ennemi["est_vivant"] and frameCount > ennemi["frame_mort"] + 90)):
             jeu["ennemis"].remove(ennemi)

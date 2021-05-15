@@ -2,12 +2,6 @@
 import json
 
 
-def verification_integrite():
-    """Permet de s'assurer que le fichier de sauvegarde data/sauvegarde.json existe pour le créer le cas échéant."""
-    fichier_sauvegarde = open("data/sauvegarde.json", "a")
-    fichier_sauvegarde.close()
-
-
 def charger():
     """Permet de charger le fichier de sauvegarde data/sauvegarde.json en de le convertir du format json en
     dictionnaire.
@@ -15,7 +9,9 @@ def charger():
     Retourne:
         - dict: Dictionnaire comportant les valeurs de data/sauvegarde.json
     """
-    verification_integrite()
+    # Permet de s'assurer que le fichier de sauvegarde existe en l'ouvrant en mode 'append'
+    test_sauvegarde = open("data/sauvegarde.json", "a")
+    test_sauvegarde.close()
 
     # Récupération de la valeur record dans le fichier data/record.txt
     fichier_sauvegarde = open("data/sauvegarde.json", "r+")
@@ -45,8 +41,6 @@ def sauvegarder(dictionnaire):
     Paramètre:
         - dict dictionnaire: Dictionnaire à sauvegarde dans le fichier.
     """
-    verification_integrite()
-
     fichier_sauvegarde = open("data/sauvegarde.json", "w")
     json.dump(dictionnaire, fichier_sauvegarde)
 

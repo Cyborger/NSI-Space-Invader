@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*- voir https://docs.python.org/2/tutorial/interpreter.html#source-code-encoding
 
-if False:
-    from lib.Processing3 import *
-
 
 def interface(jeu):
     """Retourne les éléments de l'interface pour le menu "Game Over", défini également les boutons dans la variable jeu.
@@ -11,7 +8,7 @@ def interface(jeu):
         - dict jeu: Dictionnaire contenant les valeurs associé au jeu.
 
     Retourne:
-        - dict: Dictionnaire comportant les éléements de l'interface.
+        - dict: Dictionnaire comportant les éléments de l'interface.
     """
     jeu["boutons"] = ["Recommencer", "Menu Principal"]
 
